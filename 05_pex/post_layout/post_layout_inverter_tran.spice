@@ -1,0 +1,17 @@
+** Post-Layout Inverter Transient — Propagation Delay
+.include inverter_pex_4.spice
+.lib /usr/local/share/pdk/sky130A/libs.tech/combined/sky130.lib.spice tt
+
+V1 vin 0 DC 0.9 PULSE(0 1.8 1n 0.1n 0.1n 5n 10n)
+V2 vdd 0 1.8
+
+.control
+run
+tran 10p 20n
+plot v(vin) v(vout)
+meas tran tphl TRIG v(vin) VAL=0.9 RISE=1 TARG v(vout) VAL=0.9 FALL=1
+meas tran tplh TRIG v(vin) VAL=0.9 FALL=1 TARG v(vout) VAL=0.9 RISE=1
+meas tran trise TRIG v(vout) VAL=0.18 RISE=1 TARG v(vout) VAL=1.62 RISE=1
+meas tran tfall TRIG v(vout) VAL=1.62 FALL=1 TARG v(vout) VAL=0.18 FALL=1
+.endc
+.end

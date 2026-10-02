@@ -1,0 +1,78 @@
+** Post-Layout Inverter AC Analysis
+.include inverter_pex_4.spice
+.lib /usr/local/share/pdk/sky130A/libs.tech/combined/sky130.lib.spice tt
+
+V1 vin 0 DC 0.872 AC 1
+V2 vdd 0 1.8
+
+.control
+run
+ac dec 10 1 100G
+plot vdb(vout)
+meas ac gain find vdb(vout) at=1k
+meas ac bw when vdb(vout)=gain-3
+meas ac unity_gain when vdb(vout)=0
+print v(vout)
+
+	let gain_db   = db(vout)
+	let gain_lin  = mag(vout)
+	let phase_deg = ph(vout) * 180 / 3.14159
+	let cin_eff   = abs(imag(v2#branch)) / (2 * 3.14159 * frequency)
+
+meas ac gain_midband find gain_db at=1
+
+meas ac gain_lin_dc  find gain_lin at=1
+
+meas ac ugf          when gain_db=0 fall=1
+
+meas ac cin_at_1g    find cin_eff at=1G
+
+meas ac gain_midband max gain_db
+
+let  gain_3db=gain_midband-3
+
+print gain_3db
+
+meas ac high_cutoff_frequency when gain_db=gain_3db fall=1
+
+let low_cutoff_frequency=0
+
+let bandwidth=high_cutoff_frequency-low_cutoff_frequency
+
+print bandwidth
+
+meas ac gain_low find gain_db at=1 
+
+let gain_low_3db=gain_low-3
+
+print gain_low_3db
+
+let gain_linear = 10^(gain_midband/20)
+
+print gain_linear
+
+let gain_bandwidth_product = gain_linear * high_cutoff_frequency
+
+print gain_bandwidth_product
+
+meas ac unity_gain_frequency when gain_db=0 fall=1
+
+let phase_deg=ph(vout)*180/pi
+
+plot phase_deg
+
+meas ac phase_at_unity find phase_deg when gain_db=0 fall=1
+
+let phase_corrected=phase_deg-180
+
+meas ac phase_at_unity find phase_corrected when gain_db=0 fall=1
+
+let phase_margin = 180+phase_at_unity
+
+print phase_margin 
+
+plot phase_deg
+plot gain_db
+plot phase_deg
+.endc
+.end

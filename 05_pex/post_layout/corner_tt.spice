@@ -1,0 +1,19 @@
+** Post-Layout Inverter Corner: tt
+.include inverter_pex_4.spice
+.lib /usr/local/share/pdk/sky130A/libs.tech/combined/sky130.lib.spice tt
+
+V1 vin 0 DC 0.872 AC 1
+V2 vdd 0 1.8
+
+.control
+run
+op
+print v(vout) i(V2)
+
+ac dec 10 1 100G
+meas ac gain find vdb(vout) at=1k
+meas ac bw when vdb(vout)=gain-3
+meas ac ugf when vdb(vout)=0
+meas ac pm find phase_deg at=1k
+.endc
+.end

@@ -1,0 +1,6 @@
+** sch_path: /home/fahad/Desktop/chip/inverter_26_9_26/05_layout/magic/schematic_netlist/inverter_schematic.sch
+.subckt inverter_schematic vout vin gnd vdd
+*.PININFO vout:O vin:I gnd:B vdd:B
+XM1 vout vin gnd gnd sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1
+XM2 vout vin vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=2 nf=1
+.ends

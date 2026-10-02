@@ -1,0 +1,47 @@
+** sch_path: /home/fahad/Desktop/chip/inverter_26_9_26/03_simulation/corners/tt/inverter_ac_tt.sch
+**.subckt inverter_ac_tt vout
+*.opin vout
+XM1 vout vin 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1
+XM2 vout vin vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0 sd=0
++ mult=1
+V1 vdd 0 1.8
+V2 vin 0 DC 0.869 AC 1
+C1 vout 0 10f
+**** begin user architecture code
+.lib /usr/local/share/pdk/sky130A/libs.tech/combined/sky130.lib.spice tt
+
+
+
+.control
+
+ac dec 100 1 10G
+
+* Vectors
+let gain_db   = db(vout)
+let gain_lin  = mag(vout)
+let phase_deg = ph(vout) * 180 / 3.14159
+let cin_eff   = abs(imag(v2#branch)) / (2 * 3.14159 * frequency)
+
+* Plots
+plot gain_db
+plot phase_deg
+plot cin_eff
+
+* Measurements
+meas ac gain_midband find gain_db at=1
+meas ac gain_lin_dc  find gain_lin at=1
+meas ac ugf          when gain_db=0 fall=1
+meas ac cin_at_1g    find cin_eff at=1G
+
+* Bandwidth via 3dB trick
+let gain_3db_level = gain_db - 18.37
+meas ac f3db when gain_3db_level=0
+
+* Phase at UGF
+meas ac phase_at_ugf find phase_deg when gain_db=0 fall=1
+.endc
+
+
+**** end user architecture code
+**.ends
+.end

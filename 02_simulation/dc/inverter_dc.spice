@@ -1,0 +1,44 @@
+** sch_path: /home/fahad/Desktop/chip/inverter_26_9_26/03_simulation/dc/inverter_dc.sch
+**.subckt inverter_dc vout
+*.opin vout
+XM1 vout vin 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1
+XM2 vout vin vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0 sd=0
++ mult=1
+V1 vdd 0 1.8
+V2 vin 0 1.8
+C1 vout 0 10f
+**** begin user architecture code
+.lib /usr/local/share/pdk/sky130A/libs.tech/combined/sky130.lib.spice tt
+
+
+.control
+dc V2 0 1.8 0.01
+plot v(vout) vs v(vin)
+
+* Vm at vout = VDD/2
+meas dc vm when v(vout)=0.9
+
+* Gain = dVout/dVin
+let gain = deriv(v(vout))
+
+* Absolute gain for max
+let gain_abs = abs(gain)
+meas dc gain_max max gain_abs
+
+* VIL: where gain = -1 on falling side (vin < Vm)
+* VIH: where gain = -1 on rising side (vin > Vm)
+meas dc vil when gain=-1 from=0 to=0.9
+meas dc vih when gain=-1 from=0.9 to=1.8
+
+* Noise margins
+let voh = 1.8
+let vol = 0
+let nmh = voh - vih
+let nml = vil - vol
+print nmh nml
+.endc
+
+
+**** end user architecture code
+**.ends
+.end

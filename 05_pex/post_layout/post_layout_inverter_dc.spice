@@ -1,0 +1,19 @@
+** Post-Layout Inverter DC Sweep
+.include inverter_pex_4.spice
+.lib /usr/local/share/pdk/sky130A/libs.tech/combined/sky130.lib.spice tt
+
+V1 vin 0 DC 0
+V2 vdd 0 1.8
+
+.dc V1 0 1.8 0.01
+.control
+run
+plot v(vout) vs V1
+let gain = deriv(v(vout))
+plot gain vs V1
+meas dc vm find V1 when v(vout)=v(vin)
+meas dc gmax max abs(gain)
+meas dc vout_max max v(vout)
+meas dc vout_min min v(vout)
+.endc
+.end

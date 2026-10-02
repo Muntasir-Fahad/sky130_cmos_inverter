@@ -1,0 +1,15 @@
+* NGSPICE file created from inverter_schematic.ext - technology: sky130A
+
+.subckt sky130_fd_pr__nfet_01v8_34VMYE B D S G
+X0 S G D B sky130_fd_pr__nfet_01v8 ad=0.29 pd=2.58 as=0.29 ps=2.58 w=1 l=0.15
+.ends
+
+.subckt sky130_fd_pr__pfet_01v8_VJT448 B D S G
+X0 S G D B sky130_fd_pr__pfet_01v8 ad=0.58 pd=4.58 as=0.58 ps=4.58 w=2 l=0.15
+.ends
+
+.subckt inverter_layout vout vin gnd vdd
+XXM1 gnd vout gnd vin sky130_fd_pr__nfet_01v8_34VMYE
+XXM2 vdd vout vdd vin sky130_fd_pr__pfet_01v8_VJT448
+.ends
+

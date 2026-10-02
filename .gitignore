@@ -1,0 +1,17 @@
+# Simulation output
+*.raw
+*.out
+*.data
+*.tmp
+*.bak
+*~
+.DS_Store
+*.swp
+
+# ngspice temp
+tmp_*.spice
+log_*.log
+
+# Keep summary reports
+!*_results.txt
+!lvs_report.log

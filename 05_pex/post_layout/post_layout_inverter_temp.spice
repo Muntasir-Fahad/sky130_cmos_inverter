@@ -1,0 +1,21 @@
+** Post-Layout Inverter Temperature Sweep
+.include inverter_pex_4.spice
+.lib /usr/local/share/pdk/sky130A/libs.tech/combined/sky130.lib.spice tt
+
+V1 vin 0 DC 0.872 AC 1
+V2 vdd 0 1.8
+
+.control
+run
+
+foreach T -40 -20 0 27 50 85 100 125
+  set temp = $T
+  op
+  ac dec 10 1 100G
+  meas ac gain_T find vdb(vout) at=1k
+  meas ac bw_T when vdb(vout)=gain_T-3
+  meas ac ugf_T when vdb(vout)=0
+  print v(vout) i(V2)
+end
+.endc
+.end

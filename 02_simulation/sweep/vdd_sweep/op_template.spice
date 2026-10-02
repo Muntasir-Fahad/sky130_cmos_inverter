@@ -1,0 +1,15 @@
+** OP VDD sweep template
+XM1 vout vin 0 0 sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1
+XM2 vout vin vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0 sd=0 mult=1
+V1 vdd 0 DC VDD_PLACEHOLDER
+V2 vin 0 DC VDD_PLACEHOLDER
+C1 vout 0 10f
+
+.lib /usr/local/share/pdk/sky130A/libs.tech/combined/sky130.lib.spice tt
+
+.control
+op
+print v(vout) v(vin)
+print v1#branch
+.endc
+.end
