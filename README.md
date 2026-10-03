@@ -104,6 +104,22 @@ Pre- and post-layout AC simulations used matching load conditions
 | UGF | 23.42 GHz | 14.41 GHz | ~38% |
 | Phase Margin | 68.45° | 70.03° | < 3% |
 
+═══════════════════════════════════════════════════════════════════════════
+Three-Way AC Comparison — CMOS Inverter (SKY130)
+═══════════════════════════════════════════════════════════════════════════
+Parameter       Pre(10fF)    Pre(1.22fF)   Post(1.22fF)   Deviation
+───────────────────────────────────────────────────────────────────────────
+Gain            21.37 dB     21.37 dB      21.33 dB       < 1% ✅
+f3dB            446 MHz      1.83 GHz      1.16 GHz       −37% ⚠️
+UGF             5.25 GHz     23.42 GHz     14.41 GHz      −38% ⚠️
+Phase Margin    88.58°       68.45°        70.03°         +2% ✅
+═══════════════════════════════════════════════════════════════════════════
+Conclusion:
+✅ Gain preserved
+✅ Phase margin preserved
+⚠️ BW/UGF reduced ~37% due to parasitics (expected)
+═══════════════════════════════════════════════════════════════════════════
+
 **Gain and phase margin are preserved in post-layout.** 
 Bandwidth and UGF are lower in post-layout due to parasitic 
 resistances (107 resistors) and distributed capacitances 
