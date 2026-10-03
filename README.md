@@ -86,6 +86,13 @@ sky130_cmos_inverter/
 | VDD Sweep | Done |
 | GDS | Generated |
 
+## Important Note on Simulation Conditions
+
+Pre- and post-layout AC simulations use different loading conditions; therefore their frequency-performance values are not directly comparable.
+
+- **Pre-layout AC:** 10 fF external test load
+- **Post-layout AC:** ~1.22 fF natural parasitic (from PEX)
+
 ## Author
 
 **Md. Muntasir Fahad**  
