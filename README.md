@@ -92,6 +92,23 @@ Pre- and post-layout AC simulations use different loading conditions; therefore 
 
 - **Pre-layout AC:** 10 fF external test load
 - **Post-layout AC:** ~1.22 fF natural parasitic (from PEX)
+## Important Note on AC Simulation Conditions
+
+Pre- and post-layout AC simulations used matching load conditions 
+(~1.22 fF) for fair comparison:
+
+| Parameter | Pre-Layout | Post-Layout | Deviation |
+|---|---|---|---|
+| Gain | 21.37 dB | 21.33 dB | < 1% |
+| f3dB (BW) | 1.83 GHz | 1.16 GHz | ~37% |
+| UGF | 23.42 GHz | 14.41 GHz | ~38% |
+| Phase Margin | 68.45° | 70.03° | < 3% |
+
+**Gain and phase margin are preserved in post-layout.** 
+Bandwidth and UGF are lower in post-layout due to parasitic 
+resistances (107 resistors) and distributed capacitances 
+that introduce additional poles and slow the circuit response.
+
 
 ## Author
 
